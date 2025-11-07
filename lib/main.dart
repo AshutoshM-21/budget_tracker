@@ -1,8 +1,10 @@
+import 'package:budget_tracker/app/di/injector.dart';
 import 'package:budget_tracker/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
   runApp(const MyApp());
+   await initDependencies();   
 }
 
 class MyApp extends StatelessWidget {
@@ -11,14 +13,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Budget Tracker',
-      theme: ThemeData(
-    
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+        return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: const DashboardPage(),
     );
+    
   }
 }
 
