@@ -33,11 +33,11 @@ class $TransactionsTableTable extends TransactionsTable
   );
   static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
-  late final GeneratedColumn<int> amount = GeneratedColumn<int>(
+  late final GeneratedColumn<double> amount = GeneratedColumn<double>(
     'amount',
     aliasedName,
     false,
-    type: DriftSqlType.int,
+    type: DriftSqlType.double,
     requiredDuringInsert: true,
   );
   static const VerificationMeta _dateMeta = const VerificationMeta('date');
@@ -156,7 +156,7 @@ class $TransactionsTableTable extends TransactionsTable
         data['${effectivePrefix}title'],
       )!,
       amount: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
+        DriftSqlType.double,
         data['${effectivePrefix}amount'],
       )!,
       date: attachedDatabase.typeMapping.read(
@@ -184,7 +184,7 @@ class TransactionsTableData extends DataClass
     implements Insertable<TransactionsTableData> {
   final int id;
   final String title;
-  final int amount;
+  final double amount;
   final DateTime date;
   final int categoryId;
   final bool isExpense;
@@ -201,7 +201,7 @@ class TransactionsTableData extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['title'] = Variable<String>(title);
-    map['amount'] = Variable<int>(amount);
+    map['amount'] = Variable<double>(amount);
     map['date'] = Variable<DateTime>(date);
     map['category_id'] = Variable<int>(categoryId);
     map['is_expense'] = Variable<bool>(isExpense);
@@ -227,7 +227,7 @@ class TransactionsTableData extends DataClass
     return TransactionsTableData(
       id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
-      amount: serializer.fromJson<int>(json['amount']),
+      amount: serializer.fromJson<double>(json['amount']),
       date: serializer.fromJson<DateTime>(json['date']),
       categoryId: serializer.fromJson<int>(json['categoryId']),
       isExpense: serializer.fromJson<bool>(json['isExpense']),
@@ -239,7 +239,7 @@ class TransactionsTableData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'title': serializer.toJson<String>(title),
-      'amount': serializer.toJson<int>(amount),
+      'amount': serializer.toJson<double>(amount),
       'date': serializer.toJson<DateTime>(date),
       'categoryId': serializer.toJson<int>(categoryId),
       'isExpense': serializer.toJson<bool>(isExpense),
@@ -249,7 +249,7 @@ class TransactionsTableData extends DataClass
   TransactionsTableData copyWith({
     int? id,
     String? title,
-    int? amount,
+    double? amount,
     DateTime? date,
     int? categoryId,
     bool? isExpense,
@@ -306,7 +306,7 @@ class TransactionsTableCompanion
     extends UpdateCompanion<TransactionsTableData> {
   final Value<int> id;
   final Value<String> title;
-  final Value<int> amount;
+  final Value<double> amount;
   final Value<DateTime> date;
   final Value<int> categoryId;
   final Value<bool> isExpense;
@@ -321,7 +321,7 @@ class TransactionsTableCompanion
   TransactionsTableCompanion.insert({
     this.id = const Value.absent(),
     required String title,
-    required int amount,
+    required double amount,
     required DateTime date,
     required int categoryId,
     required bool isExpense,
@@ -333,7 +333,7 @@ class TransactionsTableCompanion
   static Insertable<TransactionsTableData> custom({
     Expression<int>? id,
     Expression<String>? title,
-    Expression<int>? amount,
+    Expression<double>? amount,
     Expression<DateTime>? date,
     Expression<int>? categoryId,
     Expression<bool>? isExpense,
@@ -351,7 +351,7 @@ class TransactionsTableCompanion
   TransactionsTableCompanion copyWith({
     Value<int>? id,
     Value<String>? title,
-    Value<int>? amount,
+    Value<double>? amount,
     Value<DateTime>? date,
     Value<int>? categoryId,
     Value<bool>? isExpense,
@@ -376,7 +376,7 @@ class TransactionsTableCompanion
       map['title'] = Variable<String>(title.value);
     }
     if (amount.present) {
-      map['amount'] = Variable<int>(amount.value);
+      map['amount'] = Variable<double>(amount.value);
     }
     if (date.present) {
       map['date'] = Variable<DateTime>(date.value);
@@ -1052,7 +1052,7 @@ typedef $$TransactionsTableTableCreateCompanionBuilder =
     TransactionsTableCompanion Function({
       Value<int> id,
       required String title,
-      required int amount,
+      required double amount,
       required DateTime date,
       required int categoryId,
       required bool isExpense,
@@ -1061,7 +1061,7 @@ typedef $$TransactionsTableTableUpdateCompanionBuilder =
     TransactionsTableCompanion Function({
       Value<int> id,
       Value<String> title,
-      Value<int> amount,
+      Value<double> amount,
       Value<DateTime> date,
       Value<int> categoryId,
       Value<bool> isExpense,
@@ -1086,7 +1086,7 @@ class $$TransactionsTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get amount => $composableBuilder(
+  ColumnFilters<double> get amount => $composableBuilder(
     column: $table.amount,
     builder: (column) => ColumnFilters(column),
   );
@@ -1126,7 +1126,7 @@ class $$TransactionsTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get amount => $composableBuilder(
+  ColumnOrderings<double> get amount => $composableBuilder(
     column: $table.amount,
     builder: (column) => ColumnOrderings(column),
   );
@@ -1162,7 +1162,7 @@ class $$TransactionsTableTableAnnotationComposer
   GeneratedColumn<String> get title =>
       $composableBuilder(column: $table.title, builder: (column) => column);
 
-  GeneratedColumn<int> get amount =>
+  GeneratedColumn<double> get amount =>
       $composableBuilder(column: $table.amount, builder: (column) => column);
 
   GeneratedColumn<DateTime> get date =>
@@ -1219,7 +1219,7 @@ class $$TransactionsTableTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<String> title = const Value.absent(),
-                Value<int> amount = const Value.absent(),
+                Value<double> amount = const Value.absent(),
                 Value<DateTime> date = const Value.absent(),
                 Value<int> categoryId = const Value.absent(),
                 Value<bool> isExpense = const Value.absent(),
@@ -1235,7 +1235,7 @@ class $$TransactionsTableTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 required String title,
-                required int amount,
+                required double amount,
                 required DateTime date,
                 required int categoryId,
                 required bool isExpense,
