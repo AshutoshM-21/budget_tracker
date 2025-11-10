@@ -13,43 +13,45 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<DashboardBloc>()..add(LoadDashboard()),
-      child: const DashboardView(),
+      child: DashboardView(),
     );
   }
 }
 
 class DashboardView extends StatelessWidget {
-  const DashboardView({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DashboardBloc, DashboardState>(
-      builder: (context, state) {
-        if (state.loading){
-          return const Center(child: CircularProgressIndicator());
-        }
-        if(state.error!= null){
-          return Center(child: Text("Error: ${state.error}"));
-        }
-        if(state.summary ==null){
-          return Center(child: Text("NO DATA"));
-        }
-        return Scaffold(
-          appBar: AppBar(title: const Text('Dashboard')),
-          body: const SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(title: const Text('Dashboard')),
+      body: BlocBuilder<DashboardBloc, DashboardState>(
+        builder: (context, state) {
+          if (state.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state.error != null) {
+            return Center(child: Text("Error: ${state.error}"));
+          }
+
+          if (state.summary == null) {
+            return const Center(child: Text("No data"));
+          }
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                BalanceCard(),
-                SizedBox(height: 12),
-                SpendChart(),
-                SizedBox(height: 12),
-                RecentTransactionsList(),
+                // BalanceCard(summary: state.summary!),
+                const SizedBox(height: 20),
+                // SpendChart(data: state.spendByCategory),
+                const SizedBox(height: 20),
+                // RecentTransactionsList(data: state.recentTransactions),
               ],
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

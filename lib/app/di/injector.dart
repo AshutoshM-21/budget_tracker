@@ -10,6 +10,9 @@ import 'package:budget_tracker/features/dashboard/domain/usecases/get_spend_by_c
 import 'package:budget_tracker/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:budget_tracker/features/transactions/data/repositories/transaction_repository_impl.dart';
 import 'package:budget_tracker/features/transactions/domain/repositories/transaction_repository.dart';
+import 'package:budget_tracker/features/transactions/domain/usecases/delete_transaction.dart';
+import 'package:budget_tracker/features/transactions/domain/usecases/get_transactions.dart';
+import 'package:budget_tracker/features/transactions/presentation/bloc/list/transactions_list_bloc.dart';
 import 'package:budget_tracker/services/db/drift/app_database.dart';
 import 'package:get_it/get_it.dart';
 
@@ -25,10 +28,15 @@ Future<void> initDependencies() async {
   sl.registerSingleton(database.categoriesDao);
   sl.registerSingleton(database.budgetsDao);
   
-  // UseCases
+  // Dashboard UseCases
   sl.registerLazySingleton(() => GetDashboardSummary(sl()));
   sl.registerLazySingleton(() => GetRecentTransactions(sl()));
   sl.registerLazySingleton(() => GetSpendByCategory(sl()));
+
+// Transactions usecase
+  sl.registerLazySingleton(() => GetTransactions(sl()));
+  sl.registerLazySingleton(() => DeleteTransaction(sl()));
+
 
 // DashboardBloc
 sl.registerFactory(
@@ -36,6 +44,14 @@ sl.registerFactory(
     getSummary: sl(),
     getRecent: sl(),
     getSpend: sl(),
+  ),
+);
+
+// TransactionsListBloc
+sl.registerFactory(
+  () => TransactionsListBloc(
+    getTransactions: sl(),
+    deleteTransaction: sl(),
   ),
 );
   // Repositories (bind abstraction → implementation)
