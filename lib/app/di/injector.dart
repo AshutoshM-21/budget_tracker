@@ -2,6 +2,10 @@ import 'package:budget_tracker/features/budgets/data/repositories/budget_reposit
 import 'package:budget_tracker/features/budgets/domain/repositories/budget_repository.dart';
 import 'package:budget_tracker/features/categories/data/repositories/category_repository_impl.dart';
 import 'package:budget_tracker/features/categories/domain/repositories/category_repository.dart';
+import 'package:budget_tracker/features/categories/domain/usecases/add_category.dart' show AddCategory;
+import 'package:budget_tracker/features/categories/domain/usecases/delete_category.dart';
+import 'package:budget_tracker/features/categories/domain/usecases/get_categories.dart';
+import 'package:budget_tracker/features/categories/presentation/bloc/categories_bloc.dart';
 import 'package:budget_tracker/features/dashboard/data/repositories/dashboard_repository_impl.dart';
 import 'package:budget_tracker/features/dashboard/domain/repositories/dashboard_repository.dart';
 import 'package:budget_tracker/features/dashboard/domain/usecases/get_dashboard_summary.dart';
@@ -12,6 +16,7 @@ import 'package:budget_tracker/features/transactions/data/repositories/transacti
 import 'package:budget_tracker/features/transactions/domain/repositories/transaction_repository.dart';
 import 'package:budget_tracker/features/transactions/domain/usecases/delete_transaction.dart';
 import 'package:budget_tracker/features/transactions/domain/usecases/get_transactions.dart';
+import 'package:budget_tracker/features/transactions/presentation/bloc/form/transaction_form_event.dart';
 import 'package:budget_tracker/features/transactions/presentation/bloc/list/transactions_list_bloc.dart';
 import 'package:budget_tracker/services/db/drift/app_database.dart';
 import 'package:get_it/get_it.dart';
@@ -37,6 +42,11 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton(() => GetTransactions(sl()));
   sl.registerLazySingleton(() => DeleteTransaction(sl()));
 
+// categor\ies
+sl.registerLazySingleton(() => GetCategories(sl()));
+sl.registerLazySingleton(() => AddCategory(sl()));
+sl.registerLazySingleton(() => UpdateCategory(sl()));
+sl.registerLazySingleton(() => DeleteCategory(sl()));
 
 // DashboardBloc
 sl.registerFactory(
@@ -54,6 +64,16 @@ sl.registerFactory(
     deleteTransaction: sl(),
   ),
 );
+
+sl.registerFactory(
+  () => CategoriesBloc(
+    getCategories: sl(),
+    addCategory: sl(),
+    updateCategory: sl(),
+    deleteCategory: sl(),
+  ),
+);
+
   // Repositories (bind abstraction → implementation)
   sl.registerLazySingleton<TransactionRepository>(
     () => TransactionRepositoryImpl(sl()),

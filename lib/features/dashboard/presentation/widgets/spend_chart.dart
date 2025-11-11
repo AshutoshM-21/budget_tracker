@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SpendChart extends StatelessWidget {
-  const SpendChart({super.key});
+  const SpendChart({super.key, required List<Map<String, dynamic>> data});
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RecentTransactionsList extends StatelessWidget {
-  const RecentTransactionsList({super.key});
+  const RecentTransactionsList({super.key, required List data});
 
   @override
   Widget build(BuildContext context) {

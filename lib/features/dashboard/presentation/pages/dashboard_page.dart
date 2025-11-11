@@ -42,9 +42,9 @@ class DashboardView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // BalanceCard(summary: state.summary!),
+                BalanceCard(summary: state.summary!),
                 const SizedBox(height: 20),
-                // SpendChart(data: state.spendByCategory),
+                SpendChart(data: state.spendByCategory),
                 const SizedBox(height: 20),
                 // RecentTransactionsList(data: state.recentTransactions),
               ],

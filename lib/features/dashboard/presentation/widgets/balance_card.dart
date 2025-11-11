@@ -1,7 +1,8 @@
+import 'package:budget_tracker/features/dashboard/domain/entities/dashboard_summary_entity.dart';
 import 'package:flutter/material.dart';
 
 class BalanceCard extends StatelessWidget {
-  const BalanceCard({super.key});
+  const BalanceCard({super.key, required DashboardSummaryEntity summary});
 
   @override
   Widget build(BuildContext context) {
