@@ -3,33 +3,30 @@ import 'package:equatable/equatable.dart';
 
 class CategoriesState extends Equatable {
   final bool loading;
-  final List<CategoryEntity> categories;
+  final List<CategoryEntity> list;
   final String? error;
 
   const CategoriesState({
     required this.loading,
-    required this.categories,
+    required this.list,
     required this.error,
   });
 
-  factory CategoriesState.initial() => const CategoriesState(
-        loading: false,
-        categories: [],
-        error: null,
-      );
+  factory CategoriesState.initial() =>
+      const CategoriesState(loading: false, list: [], error: null);
 
   CategoriesState copyWith({
     bool? loading,
-    List<CategoryEntity>? categories,
+    List<CategoryEntity>? list,
     String? error,
   }) {
     return CategoriesState(
       loading: loading ?? this.loading,
-      categories: categories ?? this.categories,
+      list: list ?? this.list,
       error: error,
     );
   }
 
   @override
-  List<Object?> get props => [loading, categories, error];
+  List<Object?> get props => [loading, list, error];
 }

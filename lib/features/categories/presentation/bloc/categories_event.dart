@@ -11,23 +11,14 @@ class LoadCategories extends CategoriesEvent {}
 class AddCategoryEvent extends CategoriesEvent {
   final CategoryEntity category;
   AddCategoryEvent(this.category);
-
-  @override
-  List<Object?> get props => [category];
 }
 
 class UpdateCategoryEvent extends CategoriesEvent {
   final CategoryEntity category;
   UpdateCategoryEvent(this.category);
-
-  @override
-  List<Object?> get props => [category];
 }
 
 class DeleteCategoryEvent extends CategoriesEvent {
   final int id;
   DeleteCategoryEvent(this.id);
-
-  @override
-  List<Object?> get props => [id];
 }

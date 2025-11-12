@@ -1,9 +1,10 @@
 import 'package:budget_tracker/features/categories/domain/usecases/add_category.dart';
 import 'package:budget_tracker/features/categories/domain/usecases/delete_category.dart';
 import 'package:budget_tracker/features/categories/domain/usecases/get_categories.dart';
+import 'package:budget_tracker/features/categories/domain/usecases/update_category.dart';
 import 'package:budget_tracker/features/categories/presentation/bloc/categories_event.dart';
 import 'package:budget_tracker/features/categories/presentation/bloc/categories_state.dart';
-import 'package:budget_tracker/features/transactions/presentation/bloc/form/transaction_form_event.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
@@ -27,10 +28,9 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   Future<void> _load(
       LoadCategories event, Emitter<CategoriesState> emit) async {
     emit(state.copyWith(loading: true, error: null));
-
     try {
-      final list = await getCategories();
-      emit(state.copyWith(loading: false, categories: list));
+      final items = await getCategories();
+      emit(state.copyWith(loading: false, list: items));
     } catch (e) {
       emit(state.copyWith(loading: false, error: e.toString()));
     }

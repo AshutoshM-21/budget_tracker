@@ -1,73 +1,101 @@
 import 'package:equatable/equatable.dart';
+import 'package:budget_tracker/features/categories/domain/entities/category_entity.dart';
+import 'package:budget_tracker/features/transactions/domain/entities/transaction_entity.dart';
 
 class TransactionFormState extends Equatable {
-  final bool loading;
-
   final String title;
-  final String amount;
-  final int? categoryId;
+  final double amount;
   final DateTime date;
   final bool isExpense;
 
-  final bool isEditing;
-  final int? editingId;
+  final int? id;
+  final int? categoryId;
 
-  final String? error;
+  final List<CategoryEntity> categories;
+
+  final bool loading;
   final bool success;
+  final String? error;
 
   const TransactionFormState({
-    required this.loading,
     required this.title,
     required this.amount,
-    required this.categoryId,
     required this.date,
     required this.isExpense,
-    required this.isEditing,
-    required this.editingId,
-    required this.error,
+    required this.id,
+    required this.categoryId,
+    required this.categories,
+    required this.loading,
     required this.success,
+    required this.error,
   });
 
-  factory TransactionFormState.initial() => TransactionFormState(
-        loading: false,
-        title: '',
-        amount: '',
-        categoryId: null,
-        date: DateTime.now(),
-        isExpense: true,
-        isEditing: false,
-        editingId: null,
-        error: null,
-        success: false,
-      );
+  factory TransactionFormState.initial() {
+    return TransactionFormState(
+      title: "",
+      amount: 0.0,
+      date: DateTime.now(),
+      isExpense: true,
+      id: null,
+      categoryId: null,
+      categories: const [],
+      loading: false,
+      success: false,
+      error: null,
+    );
+  }
 
   TransactionFormState copyWith({
-    bool? loading,
     String? title,
-    String? amount,
-    int? categoryId,
+    double? amount,
     DateTime? date,
     bool? isExpense,
-    bool? isEditing,
-    int? editingId,
-    String? error,
+    int? id,
+    int? categoryId,
+    List<CategoryEntity>? categories,
+    bool? loading,
     bool? success,
+    String? error,
   }) {
     return TransactionFormState(
-      loading: loading ?? this.loading,
       title: title ?? this.title,
       amount: amount ?? this.amount,
-      categoryId: categoryId ?? this.categoryId,
       date: date ?? this.date,
       isExpense: isExpense ?? this.isExpense,
-      isEditing: isEditing ?? this.isEditing,
-      editingId: editingId ?? this.editingId,
-      error: error,
+      id: id ?? this.id,
+      categoryId: categoryId ?? this.categoryId,
+      categories: categories ?? this.categories,
+      loading: loading ?? this.loading,
       success: success ?? this.success,
+      error: error,
+    );
+  }
+
+  bool get isEditing => id != null;
+
+  // ✅ Needed by bloc.submit()
+  TransactionEntity toEntity() {
+    return TransactionEntity(
+      id: id,
+      title: title,
+      amount: amount,
+      date: date,
+      isExpense: isExpense,
+      categoryId: categoryId!,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [loading, title, amount, categoryId, date, isExpense, isEditing, editingId, error, success];
+  List<Object?> get props => [
+        title,
+        amount,
+        date,
+        isExpense,
+        id,
+        categoryId,
+        categories,
+        loading,
+        success,
+        error,
+      ];
 }

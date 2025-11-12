@@ -1,10 +1,16 @@
 import 'package:budget_tracker/features/budgets/data/repositories/budget_repository_impl.dart';
 import 'package:budget_tracker/features/budgets/domain/repositories/budget_repository.dart';
+import 'package:budget_tracker/features/budgets/domain/usecases/add_budget.dart';
+import 'package:budget_tracker/features/budgets/domain/usecases/delete_budget.dart';
+import 'package:budget_tracker/features/budgets/domain/usecases/get_budgets.dart';
+import 'package:budget_tracker/features/budgets/domain/usecases/update_budget.dart';
+import 'package:budget_tracker/features/budgets/presentation/bloc/budgets_bloc.dart';
 import 'package:budget_tracker/features/categories/data/repositories/category_repository_impl.dart';
 import 'package:budget_tracker/features/categories/domain/repositories/category_repository.dart';
 import 'package:budget_tracker/features/categories/domain/usecases/add_category.dart' show AddCategory;
 import 'package:budget_tracker/features/categories/domain/usecases/delete_category.dart';
 import 'package:budget_tracker/features/categories/domain/usecases/get_categories.dart';
+import 'package:budget_tracker/features/categories/domain/usecases/update_category.dart';
 import 'package:budget_tracker/features/categories/presentation/bloc/categories_bloc.dart';
 import 'package:budget_tracker/features/dashboard/data/repositories/dashboard_repository_impl.dart';
 import 'package:budget_tracker/features/dashboard/domain/repositories/dashboard_repository.dart';
@@ -16,10 +22,16 @@ import 'package:budget_tracker/features/transactions/data/repositories/transacti
 import 'package:budget_tracker/features/transactions/domain/repositories/transaction_repository.dart';
 import 'package:budget_tracker/features/transactions/domain/usecases/delete_transaction.dart';
 import 'package:budget_tracker/features/transactions/domain/usecases/get_transactions.dart';
-import 'package:budget_tracker/features/transactions/presentation/bloc/form/transaction_form_event.dart';
 import 'package:budget_tracker/features/transactions/presentation/bloc/list/transactions_list_bloc.dart';
 import 'package:budget_tracker/services/db/drift/app_database.dart';
+import 'package:budget_tracker/services/db/drift/daos/budgets_dao.dart';
+import 'package:budget_tracker/services/db/drift/daos/transactions_dao.dart';
 import 'package:get_it/get_it.dart';
+import 'package:budget_tracker/features/categories/domain/usecases/add_category.dart';
+import 'package:budget_tracker/features/categories/domain/usecases/delete_category.dart';
+import 'package:budget_tracker/features/categories/domain/usecases/get_categories.dart';
+import 'package:budget_tracker/features/categories/domain/usecases/update_category.dart'; // ✅ FIXED
+
 
 final sl = GetIt.instance;
 
@@ -42,12 +54,16 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton(() => GetTransactions(sl()));
   sl.registerLazySingleton(() => DeleteTransaction(sl()));
 
-// categor\ies
+// Category Usecases
 sl.registerLazySingleton(() => GetCategories(sl()));
 sl.registerLazySingleton(() => AddCategory(sl()));
 sl.registerLazySingleton(() => UpdateCategory(sl()));
 sl.registerLazySingleton(() => DeleteCategory(sl()));
 
+sl.registerLazySingleton(() => GetBudgets(sl()));
+sl.registerLazySingleton(() => AddBudget(sl()));
+sl.registerLazySingleton(() => UpdateBudget(sl()));
+sl.registerLazySingleton(() => DeleteBudget(sl()));
 // DashboardBloc
 sl.registerFactory(
   () => DashboardBloc(
@@ -65,6 +81,7 @@ sl.registerFactory(
   ),
 );
 
+// Category Bloc
 sl.registerFactory(
   () => CategoriesBloc(
     getCategories: sl(),
@@ -73,17 +90,32 @@ sl.registerFactory(
     deleteCategory: sl(),
   ),
 );
+// budget Bloc
+sl.registerFactory(
+  () => BudgetBloc(
+    getBudgets: sl(),
+    addBudget: sl(),
+    updateBudget: sl(),
+    deleteBudget: sl(),
+  ),
+);
+
 
   // Repositories (bind abstraction → implementation)
   sl.registerLazySingleton<TransactionRepository>(
     () => TransactionRepositoryImpl(sl()),
   );
 
-  sl.registerLazySingleton<CategoryRepository>(
-    () => CategoryRepositoryImpl(sl()),
-  );
-
-  sl.registerLazySingleton<BudgetRepository>(() => BudgetRepositoryImpl(sl()));
+  // Category Repository
+sl.registerLazySingleton<CategoryRepository>(
+  () => CategoryRepositoryImpl(sl()),
+);
+sl.registerLazySingleton<BudgetRepository>(
+  () => BudgetRepositoryImpl(
+    sl<BudgetsDao>(),
+    sl<TransactionsDao>(),
+  ),
+);
 
   sl.registerLazySingleton<DashboardRepository>(
     () => DashboardRepositoryImpl(sl()),

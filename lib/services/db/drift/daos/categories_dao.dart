@@ -1,6 +1,6 @@
+import 'package:budget_tracker/services/db/drift/tables/categories_table.dart';
 import 'package:drift/drift.dart';
 import '../app_database.dart';
-import '../tables/categories_table.dart';
 
 part 'categories_dao.g.dart';
 
@@ -9,15 +9,23 @@ class CategoriesDao extends DatabaseAccessor<AppDatabase>
     with _$CategoriesDaoMixin {
   CategoriesDao(AppDatabase db) : super(db);
 
-  Future<int> insertCategory(CategoriesTableCompanion data) =>
-      into(categoriesTable).insert(data);
+  // ✅ GET ALL
+  Future<List<CategoriesTableData>> getAllCategories() {
+    return select(categoriesTable).get();
+  }
 
-  Future<bool> updateCategory(CategoriesTableCompanion data) =>
-      update(categoriesTable).replace(data);
+  // ✅ INSERT
+  Future<int> insertCategory(CategoriesTableCompanion cat) {
+    return into(categoriesTable).insert(cat);
+  }
 
-  Future<int> deleteCategory(int id) =>
-      (delete(categoriesTable)..where((c) => c.id.equals(id))).go();
+  // ✅ UPDATE
+  Future<bool> updateCategory(CategoriesTableCompanion cat) {
+    return update(categoriesTable).replace(cat);
+  }
 
-  Future<List<CategoriesTableData>> getCategories() =>
-      select(categoriesTable).get();
+  // ✅ DELETE
+  Future<int> deleteCategory(int id) {
+    return (delete(categoriesTable)..where((tbl) => tbl.id.equals(id))).go();
+  }
 }

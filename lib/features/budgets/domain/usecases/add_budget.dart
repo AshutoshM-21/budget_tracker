@@ -1,14 +1,12 @@
 import 'package:budget_tracker/features/budgets/domain/entities/budget_entity.dart';
 import 'package:budget_tracker/features/budgets/domain/repositories/budget_repository.dart';
 
-
-
-class GetBudgets {
+class AddBudget {
   final BudgetRepository repo;
 
-  GetBudgets(this.repo);
+  AddBudget(this.repo);
 
-  Future<List<BudgetEntity>> call() {
-    return repo.getBudgets();
+  Future<void> call(BudgetEntity budget) {
+    return repo.addBudget(budget);
   }
 }

@@ -16,7 +16,7 @@ part 'app_database.g.dart';
   tables: [
     TransactionsTable,
     CategoriesTable,
-    BudgetsTable,
+    Budgets,
   ],
   daos: [
     TransactionsDao,

@@ -1,19 +1,13 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-
-class CategoryEntity extends Equatable {
-  final int? id; // nullable because DB assigns it
+class CategoryEntity {
+  final int? id;
   final String name;
-  final Color color;
-  final bool isExpense; // true = expense, false = income
+  final int color;
+  final bool isExpense;
 
-  const CategoryEntity({
+  CategoryEntity({
     this.id,
     required this.name,
     required this.color,
     required this.isExpense,
   });
-
-  @override
-  List<Object?> get props => [id, name, isExpense];
 }

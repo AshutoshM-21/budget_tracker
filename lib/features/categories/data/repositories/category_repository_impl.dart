@@ -1,35 +1,42 @@
-import 'package:budget_tracker/services/db/drift/app_database.dart';
+
+import 'package:budget_tracker/services/db/drift/daos/categories_dao.dart';
 import '../../domain/entities/category_entity.dart';
 import '../../domain/repositories/category_repository.dart';
 import '../models/category_dto.dart';
-
 class CategoryRepositoryImpl implements CategoryRepository {
-  final AppDatabase db;
+  final CategoriesDao dao;
 
-  CategoryRepositoryImpl(this.db);
+  CategoryRepositoryImpl(this.dao);
+
+  @override
+  Future<List<CategoryEntity>> getCategories() async {
+    final list = await dao.getAllCategories();
+    return list.map((row) => CategoryDto.fromTable(row).toEntity()).toList();
+  }
 
   @override
   Future<void> addCategory(CategoryEntity category) async {
-    await db.categoriesDao.insertCategory(
-      CategoryDto.fromEntity(category).toCompanion(),
+    final dto = CategoryDto(
+      name: category.name,
+      color: category.color,
+      isExpense: category.isExpense,
     );
+    await dao.insertCategory(dto.toCompanion());
   }
 
   @override
   Future<void> updateCategory(CategoryEntity category) async {
-    await db.categoriesDao.updateCategory(
-      CategoryDto.fromEntity(category).toCompanion(),
+    final dto = CategoryDto(
+      id: category.id,
+      name: category.name,
+      color: category.color,
+      isExpense: category.isExpense,
     );
+    await dao.updateCategory(dto.toCompanion());
   }
 
   @override
-  Future<void> deleteCategory(int id) async {
-    await db.categoriesDao.deleteCategory(id);
-  }
-
-  @override
-  Future<List<CategoryEntity>> getCategories() async {
-    final rows = await db.categoriesDao.getCategories();
-    return rows.map((row) => CategoryDto.fromRow(row).toEntity()).toList();
+  Future<void> deleteCategory(int id) {
+    return dao.deleteCategory(id);
   }
 }
